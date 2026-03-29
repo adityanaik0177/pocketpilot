@@ -1,0 +1,130 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta name="description" content="PocketPilot - Your daily expense tracker.">
+    <title>PocketPilot</title>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Outfit:wght@300;400;600;800&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="styles.css">
+</head>
+<body>
+    <div class="background-animation">
+        <div class="shape shape-1"></div>
+        <div class="shape shape-2"></div>
+        <div class="shape shape-3"></div>
+    </div>
+
+    <main id="app-container" class="glass-panel">
+        <!-- View 1: Home Page -->
+        <section id="view-home" class="view active">
+            <h1 class="logo">Pocket<span class="highlight">Pilot</span></h1>
+            <p class="subtitle">Navigate your finances seamlessly</p>
+            <button id="btn-update-daily" class="primary-btn pulse-anim">
+                Update Me Daily
+                <span class="btn-icon">➔</span>
+            </button>
+        </section>
+
+        <!-- View 2: Expense Dashboard -->
+        <section id="view-dashboard" class="view hidden">
+            <header class="dashboard-header">
+                <button class="icon-btn btn-back-home" aria-label="Go back">←</button>
+                <h2>Dashboard</h2>
+            </header>
+            
+            <div class="cards-container">
+                <div class="expense-card card-today" id="card-today-btn">
+                    <div class="card-icon">📅</div>
+                    <div class="card-content">
+                        <h3>Today's Flow</h3>
+                        <p class="amount" id="dash-today-amount">$0.00</p>
+                        <button class="action-link">Add entry / View today</button>
+                    </div>
+                </div>
+
+                <div class="expense-card card-month" id="card-month-btn">
+                    <div class="card-icon">📊</div>
+                    <div class="card-content">
+                        <h3>This Month's Flow</h3>
+                        <p class="amount" id="dash-month-amount">$0.00</p>
+                        <button class="action-link">View history</button>
+                    </div>
+                </div>
+
+                <div class="expense-card card-year" id="card-year-btn">
+                    <div class="card-icon">📈</div>
+                    <div class="card-content">
+                        <h3>This Year's Flow</h3>
+                        <p class="amount" id="dash-year-amount">$0.00</p>
+                        <button class="action-link">View history</button>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <!-- View 3: Add Today's Entry -->
+        <section id="view-add-entry" class="view hidden">
+            <header class="dashboard-header">
+                <button class="icon-btn btn-back-dash" aria-label="Go back">←</button>
+                <h2>Record Today</h2>
+            </header>
+            
+            <div class="form-container scrollable">
+                <form id="entry-form">
+                    <!-- Debit Section -->
+                    <div class="form-section debit-section">
+                        <h3 class="section-title text-danger">Total Debit (Expense)</h3>
+                        <div class="form-group">
+                            <label for="debit-amount">Amount ($)</label>
+                            <input type="number" id="debit-amount" min="0" step="0.01" placeholder="0.00">
+                        </div>
+                        <div class="form-group">
+                            <label for="debit-domain">What domain was this expense in?</label>
+                            <input type="text" id="debit-domain" placeholder="e.g., Groceries, Transport, Entertainment">
+                        </div>
+                        <div class="form-group">
+                            <label for="debit-desc">Details / Notes</label>
+                            <textarea id="debit-desc" rows="2" placeholder="Describe the expense..."></textarea>
+                        </div>
+                    </div>
+
+                    <!-- Credit Section -->
+                    <div class="form-section credit-section">
+                        <h3 class="section-title text-success">Total Credit (Income)</h3>
+                        <div class="form-group">
+                            <label for="credit-amount">Amount ($)</label>
+                            <input type="number" id="credit-amount" min="0" step="0.01" placeholder="0.00">
+                        </div>
+                        <div class="form-group">
+                            <label for="credit-reason">Why was the money credited?</label>
+                            <input type="text" id="credit-reason" placeholder="e.g., Salary, Refund, Freelance">
+                        </div>
+                    </div>
+
+                    <button type="submit" class="primary-btn full-width">Save Entry</button>
+                </form>
+            </div>
+        </section>
+
+        <!-- View 4: History -->
+        <section id="view-history" class="view hidden">
+            <header class="dashboard-header">
+                <button class="icon-btn btn-back-dash" aria-label="Go back">←</button>
+                <h2 id="history-title">History</h2>
+            </header>
+            
+            <div class="history-container scrollable">
+                <div id="history-list" class="history-list">
+                    <!-- History items will be injected here via JS -->
+                    <p class="empty-state">No records found.</p>
+                </div>
+            </div>
+        </section>
+    </main>
+
+    <script src="script.js"></script>
+</body>
+</html>

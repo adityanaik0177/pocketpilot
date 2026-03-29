@@ -1,0 +1,98 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Yearly Expense | PocketPilot</title>
+  <link rel="stylesheet" href="css/styles.css">
+  <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+</head>
+<body>
+  <div class="dashboard-layout">
+    <div id="sidebar-container"></div>
+    <main class="main-content">
+      <h1 class="page-title">Yearly Expense Overview</h1>
+      <p class="page-subtitle">A high-level view of your spending patterns this year.</p>
+
+      <div class="glass-panel" style="margin-top: 24px;">
+        <h3>Monthly Aggregation</h3>
+        <p style="color:var(--text-secondary); font-size:14px; margin-bottom: 20px;">Total debits and credits grouped by month.</p>
+        <div class="chart-container" style="height: 400px;">
+          <canvas id="yearlyChart"></canvas>
+        </div>
+      </div>
+    </main>
+  </div>
+
+  <script src="js/app.js"></script>
+  <script>
+    renderSidebar('yearly');
+
+    function getYearlyData() {
+      const currentYear = new Date().getFullYear();
+      const debits = Array(12).fill(0);
+      const credits = Array(12).fill(0);
+
+      const yearlyExpenses = window.appData.expenses.filter(e => {
+        return new Date(e.date).getFullYear() === currentYear;
+      });
+
+      yearlyExpenses.forEach(e => {
+        const monthIndex = new Date(e.date).getMonth();
+        if (e.type === 'debit') debits[monthIndex] += e.amount;
+        else credits[monthIndex] += e.amount;
+      });
+
+      return { debits, credits };
+    }
+
+    const { debits, credits } = getYearlyData();
+
+    const ctx = document.getElementById('yearlyChart').getContext('2d');
+    Chart.defaults.color = '#94a3b8';
+    Chart.defaults.font.family = 'Inter';
+
+    new Chart(ctx, {
+      type: 'bar',
+      data: {
+        labels: ['Jan', 'Feb', 'Mar', 'Apr', 'May', 'Jun', 'Jul', 'Aug', 'Sep', 'Oct', 'Nov', 'Dec'],
+        datasets: [
+          {
+            label: 'Total Debits',
+            data: debits,
+            backgroundColor: 'rgba(239, 68, 68, 0.7)',
+            borderColor: 'rgba(239, 68, 68, 1)',
+            borderWidth: 1,
+            borderRadius: 4
+          },
+          {
+            label: 'Total Credits',
+            data: credits,
+            backgroundColor: 'rgba(16, 185, 129, 0.7)',
+            borderColor: 'rgba(16, 185, 129, 1)',
+            borderWidth: 1,
+            borderRadius: 4
+          }
+        ]
+      },
+      options: {
+        responsive: true,
+        maintainAspectRatio: false,
+        plugins: {
+          legend: { position: 'top' }
+        },
+        scales: {
+          y: {
+            beginAtZero: true,
+            grid: { color: 'rgba(255, 255, 255, 0.1)' }
+          },
+          x: {
+            grid: { display: false }
+          }
+        }
+      }
+    });
+
+  </script>
+</body>
+</html>
